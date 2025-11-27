@@ -1,0 +1,23 @@
+{
+  "factory_names": [
+    "Fábrica Rio Claro",
+    "Fábrica Araras",
+    "Fábrica Campinas",
+    "Fábrica São Paulo"
+  ],
+  "customer_names": [
+    "CD Norte",
+    "CD Sul",
+    "CD Leste",
+    "CD Oeste",
+    "CD Central"
+  ],
+  "supply": [15, 10, 20, 25],
+  "demand": [10, 15, 20, 12, 13],
+  "costs": [
+    [8, 6, 10, 7, 9],
+    [9, 7, 4, 6, 8],
+    [5, 8, 6, 9, 7],
+    [7, 5, 9, 4, 6]
+  ]
+}

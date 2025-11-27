@@ -1,57 +1,75 @@
-# Otimização de Rotas de Distribuição
+﻿# Otimizacao de Rotas de Distribuicao (Problema de Transporte)
 
-Este repositório implementa um otimizador de transporte (problema de transporte) em Python que calcula o plano de distribuição de menor custo entre Fábricas e Centros de Distribuição (CDs). O solver usa programação linear (Simplex/Highs via `scipy.optimize.linprog`) e gera visualizações (barras e grafo de rede) das rotas ótimas.
+Projeto em Python (3.10+) para resolver o problema classico de transporte via Programacao Linear usando scipy.optimize.linprog (metodo HiGHS). O codigo foi modularizado para uso academico/profissional, com CLI, geracao aleatoria de instancias, balanceamento automatico, visualizacoes e exportacao de resultados.
 
-**Principais funcionalidades**
-- Modelagem do problema de transporte (oferta x demanda)
-- Balanceamento automático com nós fictícios (quando oferta ≠ demanda)
-- Modo de entrada manual e geração aleatória de instâncias (balanceado ou não)
-- Visualizações: gráfico de barras por CD e grafo de rede com quantidades e custos
+## Arquitetura
 
-## Arquivo principal
-- `main.py`: Programa principal que solicita entradas (ou gera aleatórias), balanceia o problema adicionando nós fictícios quando necessário, resolve com `linprog` e plota resultados com `matplotlib` e `networkx`.
+- main.py -> apenas chama a CLI.
+- src/
+  - config.py -> valores padrao e dataclasses de configuracao.
+  - data_io.py -> leitura interativa/arquivo/aleatoria e exportacao de resultados.
+  - model.py -> validacao, nomes, balanceamento automatico com nos ficticios.
+  - solver.py -> montagem das restricoes e chamada a linprog (HiGHS).
+  - visualization.py -> graficos de barras e grafo bipartido (NetworkX).
+  - cli.py -> parsing de argumentos, orquestracao e logging.
+- tests/ -> testes unitarios simples com pytest.
+- data/ -> exemplos de entrada (exemplo.json, exemplo.csv).
+- results/ -> diretorio padrao para saidas (CSV/JSON/plots).
 
-## Requisitos / Dependências
-Instale as dependências listadas no `requirements.txt` (recomendado criar e usar um ambiente virtual):
+## Instalacao
 
-No Windows (cmd):
-
-```cmd
 python -m venv .venv
-.venv\Scripts\activate
+.venv/Scripts/activate  # Windows
 pip install -r requirements.txt
-```
 
-Dependências principais usadas pelo projeto (extraídas de `requirements.txt`):
+## Uso rapido (CLI)
 
-- `numpy`
-- `scipy`
-- `matplotlib`
-- `networkx`
+# modo interativo
+python main.py --mode interactive
 
-> Observação: o arquivo `requirements.txt` no repositório contém versões compatíveis; usar `pip install -r requirements.txt` garante que você terá as mesmas versões testadas.
+# modo aleatorio (balanceado, reprodutivel)
+python main.py --mode random --n-factories 3 --n-cds 4 --balanced yes --cost-min 1 --cost-max 50 --seed 42 --save-plots
 
-## Como usar
-1. Abra um terminal (cmd) no diretório do projeto.
-2. Ative seu ambiente virtual (opcional, recomendado).
-3. Execute:
+# modo arquivo (JSON/CSV)
+python main.py --mode file --input data/exemplo.json --save-plots --output-dir results/
 
-```cmd
-python main.py
-```
+Opcoes uteis:
+- --solver-method highs (default), --tol, --max-iter
+- --save-plots / --show-plots
+- --output-dir results/
+- --verbose para logs detalhados
 
-O programa pedirá que você escolha o modo de entrada:
-- `1` — Inserir dados manualmente (ofertas, demandas, custos)
-- `2` — Gerar dados aleatórios (você escolhe número de fábricas, CDs e se deseja balancear)
+Execute python main.py -h para a ajuda completa com exemplos.
 
-No modo aleatório o programa pergunta se deseja gerar um problema balanceado (`S`/`N`). Quando os totais de oferta e demanda divergirem, o programa adiciona automaticamente um nó fictício (CD fictício para absorver sobra ou Fábrica fictícia para suprir falta) com custo zero para permitir a resolução por `linprog`.
+## Formatos de entrada
 
-## Saída
-- Impressão do custo total mínimo (valor objetivo do solver)
-- Matriz com as quantidades transportadas entre cada par (Fábrica → CD), incluindo rotas fictícias quando aplicável
-- Dois gráficos interativos (janela matplotlib): gráfico de barras por CD e grafo de rede com etiquetas de quantidade e custo por aresta
+JSON recomendado:
+{
+  "factory_names": ["F1", "F2"],
+  "customer_names": ["CD1", "CD2", "CD3"],
+  "supply": [20, 15],
+  "demand": [5, 15, 15],
+  "costs": [[8, 6, 10], [9, 7, 4]]
+}
 
-## Estrutura mínima do repositório
-- `main.py` — código principal
-- `requirements.txt` — dependências
-- `README.md` — este arquivo
+CSV simples: primeira linha "supply,<valores>", segunda linha "demand,<valores>", demais linhas com custos por fabrica. Exemplo em data/exemplo.csv.
+
+Quando sum(supply) != sum(demand), um no ficticio e adicionado automaticamente (fabrica ou CD) com custos zero para balancear o problema.
+
+## Saidas
+- results/solution_matrix.csv -> matriz de fluxos (origem x destino).
+- results/summary.json -> status do solver, custo e metadados de balanceamento.
+- results/solution_bars.png e results/solution_network.png (se --save-plots).
+
+## Testes
+
+pytest
+
+Inclui:
+- Instancia pequena com solucao conhecida (custo 190).
+- Checagem de balanceamento com no ficticio.
+- Validacao de entradas invalidas.
+
+## Sensibilidade (ganhos duais)
+
+Se o solver retornar marginais de igualdade (HiGHS/linprog expoe em result.eqlin.marginals), eles sao capturados e podem ser usados futuramente para analises de precos-sombra.
