@@ -301,11 +301,11 @@ b_ub_scipy = np.array([4, 12, 18])
 x1_bounds = (0, None)
 x2_bounds = (0, None)
 
-# Resolver o problema (method='highs' é o padrão atual)
+# Resolver o problema (method='Simplex' é o padrão atual)
 resultado = linprog(c_scipy, A_ub=A_ub_scipy, 
                     b_ub=b_ub_scipy, 
                     bounds=[x1_bounds, x2_bounds], 
-                    method='highs')
+                    method='Simplex')
 
 if resultado.success:
     print("--- Solução Ótima (SciPy) ---")
@@ -449,7 +449,7 @@ resultado_transporte = linprog(c_transporte,
                              A_ub=A_transporte, 
                              b_ub=b_transporte, 
                              bounds=bounds, 
-                             method='highs')
+                             method='Simplex')
 
 if resultado_transporte.success:
     print("\n--- Plano de Transporte Ótimo ---")

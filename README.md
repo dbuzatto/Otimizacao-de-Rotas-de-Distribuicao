@@ -1,6 +1,6 @@
 ﻿# Otimizacao de Rotas de Distribuicao (Problema de Transporte)
 
-Projeto em Python (3.10+) para resolver o problema classico de transporte via Programacao Linear usando scipy.optimize.linprog (metodo HiGHS). O codigo foi modularizado para uso academico/profissional, com CLI, geracao aleatoria de instancias, balanceamento automatico, visualizacoes e exportacao de resultados.
+Projeto em Python (3.10+) para resolver o problema classico de transporte via Programacao Linear usando scipy.optimize.linprog (metodo Simplex). O codigo foi modularizado para uso academico/profissional, com CLI, geracao aleatoria de instancias, balanceamento automatico, visualizacoes e exportacao de resultados.
 
 ## Arquitetura
 
@@ -9,7 +9,7 @@ Projeto em Python (3.10+) para resolver o problema classico de transporte via Pr
   - config.py -> valores padrao e dataclasses de configuracao.
   - data_io.py -> leitura interativa/arquivo/aleatoria e exportacao de resultados.
   - model.py -> validacao, nomes, balanceamento automatico com nos ficticios.
-  - solver.py -> montagem das restricoes e chamada a linprog (HiGHS).
+  - solver.py -> montagem das restricoes e chamada a linprog (Simplex).
   - visualization.py -> graficos de barras e grafo bipartido (NetworkX).
   - cli.py -> parsing de argumentos, orquestracao e logging.
 - tests/ -> testes unitarios simples com pytest.
@@ -31,10 +31,12 @@ python main.py --mode interactive
 python main.py --mode random --n-factories 3 --n-cds 4 --balanced yes --cost-min 1 --cost-max 50 --seed 42 --save-plots
 
 # modo arquivo (JSON/CSV)
-python main.py --mode file --input data/exemplo.json --save-plots --output-dir results/
+python main.py --mode file --input data/exemplo.json --save-plots --output-dir results01/
+
+python main.py --mode file --input data/exemplo.json --save-plots --output-dir results02/
 
 Opcoes uteis:
-- --solver-method highs (default), --tol, --max-iter
+- --solver-method Simplex (default), --tol, --max-iter
 - --save-plots / --show-plots
 - --output-dir results/
 - --verbose para logs detalhados
@@ -72,4 +74,4 @@ Inclui:
 
 ## Sensibilidade (ganhos duais)
 
-Se o solver retornar marginais de igualdade (HiGHS/linprog expoe em result.eqlin.marginals), eles sao capturados e podem ser usados futuramente para analises de precos-sombra.
+Se o solver retornar marginais de igualdade (Simplex/linprog expoe em result.eqlin.marginals), eles sao capturados e podem ser usados futuramente para analises de precos-sombra.

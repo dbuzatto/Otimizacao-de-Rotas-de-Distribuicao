@@ -1,0 +1,34 @@
+{
+  "factory_names": [
+    "Fábrica Curitiba",
+    "Fábrica Manaus",
+    "Fábrica Salvador",
+    "Fábrica Recife",
+    "Fábrica Fortaleza",
+    "Fábrica Brasília",
+    "Fábrica Goiânia",
+    "Fábrica Belém",
+    "Fábrica Porto Alegre",
+    "Fábrica Belo Horizonte"
+  ],
+  "customer_names": [
+    "CD Alpha",
+    "CD Beta",
+    "CD Gamma",
+    "CD Delta"
+  ],
+  "supply": [100, 80, 120, 90, 110, 100, 50, 150, 70, 130],
+  "demand": [250, 300, 200, 250],
+  "costs": [
+    [12, 10, 18, 14],
+    [25, 22, 30, 20],
+    [15, 18, 12, 16],
+    [14, 16, 13, 15],
+    [20, 24, 22, 18],
+    [10, 12, 15, 11],
+    [9, 11, 14, 10],
+    [22, 25, 20, 23],
+    [18, 15, 22, 19],
+    [8, 10, 12, 9]
+  ]
+}

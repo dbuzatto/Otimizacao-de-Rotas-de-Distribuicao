@@ -22,7 +22,7 @@ def _setup_logging(verbose: bool) -> None:
 
 def _parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Problema de transporte via programacao linear (Simplex/HiGHS)",
+        description="Problema de transporte via programacao linear (Simplex)",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument("--mode", choices=["interactive", "file", "random"], required=True)
@@ -110,7 +110,7 @@ def run_cli(namespace: Optional[argparse.Namespace] = None) -> int:
         metadata.added_amount,
     )
 
-    # Resolve o PL com linprog/HiGHS
+    # Resolve o PL com linprog/Simplex
     solver_cfg = SolverConfig(method=args.solver_method, max_iter=args.max_iter, tol=args.tol)
     result = solve_transportation_problem(
         costs=balanced_data.costs,
