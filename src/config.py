@@ -21,7 +21,7 @@ class RandomProblemConfig:
 
 @dataclass
 class SolverConfig:
-    method: str = "highs"
+    method: str = "revised simplex"
     tol: float = 1e-9
     max_iter: Optional[int] = None
 
