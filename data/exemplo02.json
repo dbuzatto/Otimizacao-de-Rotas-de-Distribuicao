@@ -1,0 +1,17 @@
+{
+  "factory_names": [
+    "Fábrica 1 (BH)",
+    "Fábrica 2 (CP)"
+  ],
+  "customer_names": [
+    "CD 1 (RJ)",
+    "CD 2 (SP)",
+    "CD 3 (CT)"
+  ],
+  "supply": [1000, 1500],
+  "demand": [800, 900, 600],
+  "costs": [
+    [5, 4, 7],
+    [6, 3, 5]
+  ]
+}
