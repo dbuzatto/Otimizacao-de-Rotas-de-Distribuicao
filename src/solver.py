@@ -76,7 +76,7 @@ def solve_transportation_problem(
     supply: Sequence[float],
     demand: Sequence[float],
     capacities: Optional[Sequence[Sequence[float]]] = None,
-    solver_method: str = "highs",
+    solver_method: str = "revised simplex",
     max_iter: Optional[int] = None,
     tol: float = 1e-9,
 ) -> SolutionResult:
